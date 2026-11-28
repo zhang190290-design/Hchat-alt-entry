@@ -4,6 +4,9 @@ name: 指定版本构建（不建 Release）
 # 触发：Actions → 指定版本构建（不建 Release）→ Run workflow。
 
 on:
+  push:
+    branches:
+      - build-ci
   workflow_dispatch:
     inputs:
       version_name:
@@ -19,7 +22,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: build-custom-${{ github.ref }}-${{ github.event.inputs.version_code }}
+  group: build-custom-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -62,9 +65,9 @@ jobs:
 
       - name: 构建签名 APK
         env:
-          HCAT_VERSION_NAME: ${{ github.event.inputs.version_name }}
-          HCAT_VERSION_CODE: ${{ github.event.inputs.version_code }}
-          HCAT_APK_NAME: Hchat-alt-entry-${{ github.event.inputs.version_name }}-${{ github.event.inputs.version_code }}-signed.apk
+          HCAT_VERSION_NAME: ${{ github.event.inputs.version_name || '6.6.5' }}
+          HCAT_VERSION_CODE: ${{ github.event.inputs.version_code || '1026' }}
+          HCAT_APK_NAME: Hchat-alt-entry-${{ github.event.inputs.version_name || '6.6.5' }}-${{ github.event.inputs.version_code || '1026' }}-signed.apk
           HCAT_STORE_PASSWORD: ${{ secrets.HCAT_STORE_PASSWORD }}
           HCAT_KEY_ALIAS: ${{ secrets.HCAT_KEY_ALIAS }}
           HCAT_KEY_PASSWORD: ${{ secrets.HCAT_KEY_PASSWORD }}
@@ -98,7 +101,7 @@ jobs:
       - name: 上传 APK
         uses: actions/upload-artifact@v4
         with:
-          name: Hchat-${{ github.event.inputs.version_name }}-${{ github.event.inputs.version_code }}
+          name: Hchat-${{ github.event.inputs.version_name || '6.6.5' }}-${{ github.event.inputs.version_code || '1026' }}
           path: |
             app/build/outputs/apk/release/*.apk
             dist/*.apk
