@@ -7,10 +7,10 @@ permissions:
   contents: write
 
 env:
-  HCAT_SINGLE_VERSION_NAME_BASE: "6.4.1"
+  HCAT_SINGLE_VERSION_NAME_BASE: "6.6.6"
   # 正式版 versionCode 必须高于 test.* 测试包（600 + 运行号），
-  # 否则已装测试包无法直接覆盖安装正式版。正式版从 1000 起。
-  HCAT_SINGLE_VERSION_CODE_BASE: "1000"
+  # 否则已装测试包无法直接覆盖安装正式版。正式版从 1030 起，保证能覆盖已安装的 1026。
+  HCAT_SINGLE_VERSION_CODE_BASE: "1030"
   HCAT_SINGLE_RUN_NUMBER_BASE: "0"
 
 jobs:
